@@ -2,41 +2,33 @@
 
 namespace App\Form;
 
-use App\Entity\Question;
+use App\Entity\Answer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
-class QuestionType extends AbstractType
+class AnswerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('question', null, [
-				'constraints'=>[
-				new NotBlank([
-					'message' => 'Your question may not be blank.'
-				]),
-				new Length([
-					'max' => 255,
-					'maxMessage' => 'Your question can only be {{ limit }} characters long.'
-				])
-			  ]
-            ])
-            ->add('body', CKEditorType::class, [
-				'required' => false,
+            ->add('body', TextareaType::class, [
+				'constraints' => [
+					new NotBlank([
+						'message' => 'Your answer may not be blank!'
+					])
+				],
+				'required' => true,
 				'attr' => [
 					'rows' =>5
 				],
-				'label'=> 'Body(Optional)'
+				'label'=> 'Your Answer'
             ])
             ->add('submit', SubmitType::class, [
-				'label' => "Ask Question"
+				'label' => "Post Answer"
             ])
         ;
     }
@@ -44,7 +36,7 @@ class QuestionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Question::class,
+            'data_class' => Answer::class,
         ]);
     }
 }

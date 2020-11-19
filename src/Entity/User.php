@@ -43,9 +43,15 @@ class User implements UserInterface
      */
     private $questions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $answer;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->answer = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +156,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($question->getUser() === $this) {
                 $question->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Answer[]
+     */
+    public function getAnswer(): Collection
+    {
+        return $this->answer;
+    }
+
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answer->contains($answer)) {
+            $this->answer[] = $answer;
+            $answer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answer->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getUser() === $this) {
+                $answer->setUser(null);
             }
         }
 
