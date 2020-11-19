@@ -16,6 +16,9 @@
 		<div class="collapse navbar-collapse">
   		 <ul class="navbar-nav ml-auto">
 		{% if app.user %}
+			<li class="nav-item">
+           	<a class="nav-link" href="{{ path('app_question_ask') }}">Ask Question</a>
+      		 </li>
        		<li class="nav-item">
            	<a class="nav-link" href="{{ path('app_logout') }}">Log Out</a>
       		 </li>
