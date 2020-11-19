@@ -18,6 +18,10 @@ class QuestionController extends AbstractController
      */
     public function index(Question $question): Response
     {
+		$question -> setViews($question -> getViews()+1);
+		$entityManager = $this -> getDoctrine()->getManager();
+		$entityManager -> persist($question);
+		$entityManager->flush();
 		
         return $this->render('question/index.html.twig', [
             'question' => $question,
